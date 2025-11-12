@@ -13,7 +13,7 @@ const signin = async (req, res) => {
     if(!match)
         return res.status(401).json({error: "Email and password do not match"});
 
-    const token = jwt.sign({_id: user._id}, config.jwtSecret,{
+    const token = jwt.sign({_id: user._id, role: user.role}, config.jwtSecret,{
         expiresIn: "1h",
     });
 
@@ -43,6 +43,14 @@ const signin = async (req, res) => {
         return res.status(401).json({error: "Invalid or expired token"});
       }
     };
+
+    const isAdmin = (req, res, next) => {
+        if (req.auth && req.auth.role == "admin"){
+            next();
+        } else{
+            return res.status(403).json({error: "Access Denied, You are not Admin."});
+        }
+    };
    
 
-export default {signin, signout, requireSignin};
+export default {signin, signout, requireSignin, isAdmin};
