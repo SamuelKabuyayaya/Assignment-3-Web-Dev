@@ -48,7 +48,7 @@ const signin = async (req, res) => {
         if (req.auth && req.auth.role == "admin"){
             next();
         } else{
-            return res.status(403).json({error: "Access Denied, You are not Admin."});
+            return res.status(403).json({error: "Access Denied, you are not Admin."});
         }
     };
    

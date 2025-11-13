@@ -26,7 +26,6 @@ const UserSchema = new mongoose.Schema({
     default: "user",
   },
 
-
   created: {
     type: Date,
     default: Date.now,
