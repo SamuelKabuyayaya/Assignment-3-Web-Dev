@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import config from "../config/config.js";
 import User from "./models/user.model.js";
-import bcrypt from "bcrypt.js";
+import bcrypt from "bcryptjs";
 
 const seedAdmin = async () => {
     try{
@@ -10,7 +10,7 @@ const seedAdmin = async () => {
 
         const admin = {name: "Admin", email: "admin@gmail.com", password: hashed, role: "admin",};
 
-        await User.deleteOne({email: admin.emai});
+        await User.deleteOne({email: admin.email});
         await User.create(admin);
         console.log("Congrats, you logged in as admin.");
         process.exit(0);

@@ -8,29 +8,16 @@ const ProjectSchema = new mongoose.Schema({
     required: "Title is required",
   },
   
-    firstname: {
+  src:{
     type: String,
     trim: true,
-    required: "Firstname is required",
-  },
+    required: "Image path is required",
+  },   
 
-  lastname: {
+  githubLink:{
     type: String,
     trim: true,
-    required: "Lastname is required",
-  },
-
-  email: {
-    type: String,
-    trim: true,
-    unique: "Email already exists",
-    match: [/.+\@.+\..+/, "Please fill a valid email address"],
-    required: "Email is required",
-  },
-
-    completion:{
-    type: Date,
-    required: "Completion date is required",
+    required: "GitHub link is required",
   },
 
   description:{
