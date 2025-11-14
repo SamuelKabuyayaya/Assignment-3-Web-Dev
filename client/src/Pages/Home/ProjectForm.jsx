@@ -1,15 +1,33 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
-export default function ProjectForm({ onSubmit, initialData }) {
-  const [title, setTitle] = useState(initialData?.title || "");
-  const [description, setDescription] = useState(initialData?.description || "");
-  const [src, setSrc] = useState(initialData?.src || "");
-  const [githubLink, setGithubLink] = useState(initialData?.githubLink || "");
+export default function ProjectForm({ initialData = null, onSubmit, }) {
+  const [form, setForm] = useState({
+    title: "",
+    src: "",
+    githubLink: "",
+    description: "",
+  });
+
+    useEffect(() => {
+    if (initialData) {
+      setForm({
+        title: initialData.title || "",
+        src: initialData.src || "",
+        githubLink: initialData.githubLink || "",
+        description: initialData.description || "",
+      });
+    }
+  }, [initialData]);
+
+
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSubmit({ title, description, src, githubLink });
-  };
+    onSubmit(form);
+  }
 
   return (
     <section className="contact--section">
@@ -22,8 +40,9 @@ export default function ProjectForm({ onSubmit, initialData }) {
           <input
             type="text"
             className="contact--input"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
+            name="title"
+            value={form.title}
+            onChange={handleChange}
             required
           />
         </label>
@@ -33,8 +52,8 @@ export default function ProjectForm({ onSubmit, initialData }) {
           <input
             type="text"
             className="contact--input"
-            value={src}
-            onChange={(e) => setSrc(e.target.value)}
+            value={form.src}
+            onChange={handleChange}
             placeholder="/img/Project1.png"
             required
           />
@@ -45,8 +64,9 @@ export default function ProjectForm({ onSubmit, initialData }) {
           <input
             type="url"
             className="contact--input"
-            value={githubLink}
-            onChange={(e) => setGithubLink(e.target.value)}
+             name="githubLink"
+            value={form.githubLink}
+            onChange={handleChange}
             required
           />
         </label>
@@ -56,10 +76,11 @@ export default function ProjectForm({ onSubmit, initialData }) {
           <textarea
             className="contact--input"
             rows="5"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
+            name="description"
+            value={form.description}
+            onChange={handleChange}
             required
-          ></textarea>
+          />
         </label>
 
         <button className="btn btn-primary">Save</button>

@@ -37,6 +37,9 @@ const contactById = async (req, res, next, id) => {
       contact.firstname = req.body.firstname || contact.firstname;
       contact.lastname = req.body.lastname || contact.lastname;
       contact.email = req.body.email || contact.email;
+      contact.phone     = req.body.phone     || contact.phone;
+      contact.topic     = req.body.topic     || contact.topic;
+      contact.message   = req.body.message   || contact.message;
 
       await contact.save();
       res.json({message: "Contact updated!"});

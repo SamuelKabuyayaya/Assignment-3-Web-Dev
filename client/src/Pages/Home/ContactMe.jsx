@@ -1,5 +1,58 @@
 //This displays the "Contact Me" section with a for for user input
+import { useState } from "react";
+import { createContact } from "../../contact-api";
+
 export default function ContactMe(){
+
+    const [formData, setFormData] = useState({
+    firstname: "",
+    lastname: "",
+    email: "",
+    phone: "",
+    topic: "",
+    message: "",
+  });
+
+    const [success, setSuccess] = useState("");
+    const [error, setError] = useState("");
+
+      const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setSuccess("");
+    setError("");
+
+    const token = localStorage.getItem("jwtToken");
+
+    if (!token) {
+      setError("You must be signed in to submit the form.");
+      return;
+    }
+
+    const response = await createContact(token, formData);
+
+    if (response.error) {
+      setError(response.error);
+    } else {
+      setSuccess("Message sent successfully!");
+      setFormData({
+        firstname: "",
+        lastname: "",
+        email: "",
+        phone: "",
+        topic: "",
+        message: "",
+      });
+    }
+  };
+
+
     return (
         //section container with id for easy css styling and navigation
         <section id="Contact" className="contact--section">
@@ -15,73 +68,85 @@ export default function ContactMe(){
 
                 {/*Name, email and phone number*/}
                 <div className="contact--container">
-                    <label htmlFor="first-name" className="contact--label">
+                    <label className="contact--label">
                         <span className="text-md">First Name</span>
                         <input 
                         type="text"
                         className="contact--input text-md"
-                        name="first-name"
-                        id="first-name"
+                        name="firstname"
+                        value={formData.firstname}
+                        onChange={handleChange}
                         required
                         />
                     </label>
-                    <label htmlFor="last-name" className="contact--label">
+                    <label className="contact--label">
                         <span className="text-md">Last Name</span>
                         <input 
                         type="text"
                         className="contact--input text-md"
-                        name="last-name"
-                        id="last-name"
-                        required
+                        name="lastname"
+                       value={formData.lastname}
+                       onChange={handleChange}
+                       required
                         />
                     </label>
-                    <label htmlFor="email" className="contact--label">
+                    <label className="contact--label">
                         <span className="text-md">Email</span>
                         <input 
                         type="email"
                         className="contact--input text-md"
                         name="email"
-                        id="email"
+                        value={formData.email}
+                        onChange={handleChange}
                         required
                         />
                     </label>
-                    <label htmlFor="phone-number" className="contact--label">
+                    <label className="contact--label">
                         <span className="text-md">Phone Number</span>
                         <input 
                         type="number"
                         className="contact--input text-md"
-                        name="phone-number"
-                        id="phone-number"
+                        name="phone"
+                        value={formData.phone}
+                        onChange={handleChange}
                         required
                         />
                     </label>
                 </div>
 
                 {/*Dropdown for choosing a topic*/}
-                <label htmlFor="choose-topic" className="contact--label">
+                <label className="contact--label">
                         <span className="text-md">Choose Topic</span>
-                        <select id="choose-topic" className="contact--input text-md">
-                            <option>Select One...</option>
-                            <option>Basic Programming Projects</option>
-                            <option>Web Development Basics</option>
-                            <option>3D modelling in Blender</option>
+                        <select 
+                            name="topic"
+                            value={formData.topic}
+                            onChange={handleChange}
+                            className="contact--input text-md"
+                            required
+                        >
+                            <option value="">Select One...</option>
+                            <option value="Basic Programming Projects">Basic Programming Projects</option>
+                            <option value="Web Development Basics">Web Development Basics</option>
+                            <option value="3D modelling in Blender">3D modelling in Blender</option>
                         </select>
                     </label>
                     
                     {/*Message input*/}
-                    <label htmlFor="message" className="contact--label">
+                    <label className="contact--label">
                         <span className="text-md">Message</span>
-                        <input 
-                        className="contact--input text-md"
-                        id="message"
+                        <textarea 
+                        name="message"
+                        value={formData.message}
+                        onChange={handleChange}
                         rows="8"
                         placeholder="Type your message here..."
+                        required
                         />
                     </label>
 
                     {/*Checkbox for terms acceptance*/}
-                    <label label className="checkbox--label" htmlFor="checkbox--label">
-                        <input type="checkbox" required name="checkbox" id="checkbox" />
+                    <label className="checkbox--label">
+                        <input type="checkbox" required />
                         <span className="text-sm">I accept the terms</span>
                     </label>
                     <div>
