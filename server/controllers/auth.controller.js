@@ -3,6 +3,34 @@ import User from "../models/user.model.js";
 import config from "../../config/config.js";
 import bcrypt from "bcryptjs";
 
+const signup = async (req, res) => {
+  try {
+    const { name, email, password } = req.body;
+
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({ error: "Email already in use" });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const user = new User({
+      name,
+      email,
+      password: hashedPassword,
+      role: "user",
+    });
+
+    await user.save();
+
+    res.status(201).json({ message: "Signup successful!" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Signup failed" });
+  }
+};
+
+
 const signin = async (req, res) => {
     try {
     const user = await User.findOne({email: req.body.email});
@@ -65,4 +93,4 @@ const signin = async (req, res) => {
     };
    
 
-export default {signin, signout, requireSignin, isAdmin};
+export default {signup, signin, signout, requireSignin, isAdmin};
