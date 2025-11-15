@@ -14,6 +14,9 @@ import AdminAddQualification from "./Pages/Home/AdminAddQualification";
 import AdminQualifications from "./Pages/Home/AdminQualifications";
 import AdminEditQualification from "./Pages/Home/AdminEditQualification";
 
+import AdminContacts from "./Pages/Home/AdminContacts";
+import AdminEditContact from "./Pages/Home/AdminEditContact";
+
 
 function App() {
   return(
@@ -32,6 +35,9 @@ function App() {
         <Route path="/admin/qualifications" element={<AdminQualifications />} />
         <Route path="/admin/qualifications/add" element={<AdminAddQualification />} />
         <Route path="/admin/qualifications/edit/:id" element={<AdminEditQualification />} />
+
+        <Route path="/admin/contacts" element={<AdminContacts />} />
+        <Route path="/admin/contacts/:contactId" element={<AdminEditContact />} />
 
           <Route path="*" element={<div>404 Not Found</div>}></Route>
         </Routes>
